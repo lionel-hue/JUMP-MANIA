@@ -1,0 +1,719 @@
+  <!DOCTYPE html
+    <html>
+       <head>
+<meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+class Sprite {
+   constructor({imgSrc,pos,vel,width,height,scale,framesMax,dynamic,extraGap,collider,sprites}){
+     
+     this.img = new Image()
+     this.img.src = imgSrc
+     this.pos = pos
+     this.vel = vel
+     this.width= width
+     this.height=height
+     this.scale = scale
+     this.framesMax= framesMax
+     this.framesCurrent=0
+     this.framesElasped= 0
+     this.framesHold = 3
+     this.dynamic=dynamic
+     this.extraGap=extraGap
+     this.collider=collider
+     this.sprites=sprites
+       
+   }
+    draw(){
+     if (this.dynamic==true){
+        ctx.drawImage(
+          this.img,
+          this.framesCurrent*(this.img.width/this.framesMax),
+          0,
+          this.img.width/this.framesMax,
+          this.img.height,
+          this.pos.x,
+          this.pos.y,
+          (this.img.width/this.framesMax)*this.scale,
+          (this.img.height)*this.scale)
+          ctx.fillStyle='rgba(0,0,0,1)'
+          ctx.fillRect(
+            this.collider.x,
+            this.collider.y,
+            this.collider.width,
+            this.collider.height)
+      }
+      else if(this.dynamic==false){
+        ctx.drawImage(
+          this.img,
+          this.pos.x,
+          this.pos.y,
+          this.width,
+          this.height)
+      }
+      
+        for(const  sprite in this.sprites){
+   this.sprites[sprite].image = new Image()
+   this.sprites[sprite].image.src= this. sprites[sprite].imgSrc
+    
+    }
+    
+    }
+    
+    update(){
+      this.draw()
+     this.framesElasped++
+     
+    if(this.framesElasped % this.framesHold===0){
+  if(this.framesCurrent<this.framesMax-1){
+      this.framesCurrent++
+  } else this.framesCurrent =0
+      }
+       // Jump Initiation
+      this.pos.y +=this.vel.y
+      this.collider.x +=this.vel.x
+      this.collider.y +=this.vel.y
+      
+     if(this.pos.y+this.vel.y+this.img.height-this.extraGap >= theGround){
+       this.vel.y = 0
+       this.img.src = 'https://i.ibb.co/4tcF8Qm/Run.png'
+       switchSprites()
+       pressed = 0
+     }  
+     else this.vel.y +=gravity
+
+    
+    }
+ }
+ 
+ 
+   class Obstacles extends Sprite{
+     constructor({imgSrc,pos,vel,scale,framesMax,extraGap,dynamic,collider}){
+       
+         super({imgSrc,pos,vel,scale,framesMax,extraGap,dynamic,collider})
+         this.framesCurrent=0
+         this.framesElasped=0
+         this.framesHold=6
+     }
+       
+       UPDATE(){
+          this.draw()
+          
+          this.framesElasped++
+       if(this.framesElasped%this.framesHold===0){
+        if(this.framesCurrent<this.framesMax-1){
+          this.framesCurrent++
+        } else this.framesCurrent=0
+       }
+         this.pos.x += this.vel.x
+         
+         this.collider.x +=this.vel.x
+         this.collider.y +=this.vel.y
+       }
+       
+ }
+ 
+  
+  class PowerUps extends Sprite{
+     constructor({imgSrc,pos,vel,scale,framesMax,extraGap,dynamic,collider}){
+       
+         super({imgSrc,pos,vel,scale,framesMax,extraGap,dynamic,collider})
+         this.framesCurrent=0
+         this.framesElasped=0
+         this.framesHold=6
+     }
+       
+       Update(){
+          this.draw()
+          
+          this.framesElasped++
+       if(this.framesElasped%this.framesHold===0){
+        if(this.framesCurrent<this.framesMax-1){
+          this.framesCurrent++
+        } else this.framesCurrent=0
+       }
+         this.pos.x += this.vel.x
+         
+         this.collider.x +=this.vel.x
+         this.collider.y +=this.vel.y
+       }
+       
+ }
+  
+ const InnerWidth =775,
+       InnerHeight=269, 
+       theGround=InnerHeight-119,
+       gravity=0.7
+       
+let    animateId,
+       pressed,
+       clickable,
+       health,
+       addingScore,
+       hasTakenHit,
+       shouldRemoveHP,
+       hasEatenHP,
+       shouldAddHP,
+       deleteHP,
+       obstacles = [],
+       powerups  = []
+       
+ const gameMusic = new Audio(),
+       iAmHItMusic = new Audio(),
+       gameOverMusic = new Audio()
+
+       
+       gameMusic.src = 'https://www.dropbox.com/s/60sokfk3t9fcj5k/echoes-free-introoutro-music-prod-urbn-beats-8896.mp3?dl=1'
+       
+       iAmHItMusic.src = 'https://www.dropbox.com/s/anc2v40rkkkt3d9/ugh.mp3?dl=1'
+       
+       gameOverMusic.src = 'https://www.dropbox.com/s/v5xznfm21zhaz6l/sfx-defeat2.mp3?dl=1'
+
+  const backGround = new Sprite({
+      imgSrc:'https://i.ibb.co/9GGDvRv/20220415-165208.png',
+       pos:{
+         x:0,
+         y:0
+       },
+       vel:{
+         x:0,
+         y:0
+       },
+       width:InnerWidth,
+       height:InnerHeight+(InnerHeight/1.29),
+        scale:undefined,
+        framesMax:undefined,
+        dynamic:false,
+        sprites:undefined
+    })
+
+
+ const runner = new Sprite({
+       imgSrc :'https://i.ibb.co/4tcF8Qm/Run.png',
+       pos:{
+           x:20,
+           y: theGround
+       },
+       vel:{
+         x:0,
+         y:0
+       },
+       scale:2,
+       framesMax:8,
+       dynamic:true,
+       extraGap:76,
+       
+       collider: {
+             x :90,
+             y :210,
+             width:20,
+             height:40
+       },
+        
+       sprites:{
+         jump : {
+           imgSrc :'https://i.ibb.co/VNKcKjP/Jump.png',
+        framesMax : 2
+         },
+         run:{
+           imgSrc :'https://i.ibb.co/4tcF8Qm/Run.png',
+           framesMax :8
+        }
+       }
+      }) 
+      
+      function switchSprites(){
+        switch (runner.img.src) {
+              case 'https://i.ibb.co/VNKcKjP/Jump.png':
+          //Jump
+          runner.scale = 0.74
+          runner.framesMax = 2
+          runner.extraGap = 207
+                break
+              case 'https://i.ibb.co/4tcF8Qm/Run.png':
+          //run
+          runner.scale = 2
+          runner.framesMax = 8  
+          runner.extraGap = 76
+                break
+              
+              default:
+                // code
+            }   
+      }
+        
+ const  spawnObstacles = ()=>{
+          setInterval(()=>{
+      const rock= new Obstacles({
+          
+       imgSrc : 'https://i.ibb.co/wpfYr7h/rock-3.png',
+           pos :{
+              x:InnerWidth+50, 
+              y: InnerHeight-36
+           },
+           vel:{
+              x:-5,
+              y:0
+           },
+           scale:1,
+           framesMax:1,
+           extraGap:60,
+           dynamic:true,
+           
+           collider: {
+             x :828,
+             y :232,
+             width:45,
+             height:18
+       }
+        })
+       obstacles.push(rock)
+          },3000) 
+          setInterval(()=>{
+      const lamp= new Obstacles({
+          
+       imgSrc : 'https://i.ibb.co/0ySPrTN/lamp.png',
+           pos :{
+              x:InnerWidth+50, 
+              y: InnerHeight-78
+           },
+           vel:{
+              x:-5,
+              y:0
+           },
+           scale:1,
+           framesMax:1,
+           extraGap:60,
+           dynamic:true,
+           
+           collider: {
+             x :829,
+             y :193,
+             width:20,
+             height:55
+           }
+        })
+       obstacles.push(lamp)
+          },10000)
+          setInterval(()=>{
+      const building = new Obstacles({
+          
+       imgSrc : 'https://i.ibb.co/xqvHwHC/shop-anim.png',
+           pos :{
+              x:InnerWidth+200, 
+              y: InnerHeight-196
+           },
+           vel:{
+              x:-5,
+              y:0
+           },
+           scale:1.53,
+           framesMax:6,
+           extraGap:60,
+           dynamic:true,
+           
+           collider: {
+             x :980,
+             y :120,
+             width:150,
+             height:131
+           }
+        })
+       obstacles.push(building)
+          },20000)
+        }
+        
+        
+        const spwanPowerups = ()=>{
+      setTimeout(()=>{
+          setInterval(()=>{
+    const lifePowerUp = new PowerUps({
+               imgSrc:'https://i.ibb.co/hmSk03d/1650388043468.png',
+               pos:{
+                 x :InnerWidth+14,
+                 y :50
+               },
+               vel:{
+                 x:-5,
+                 y:0
+               },
+               scale:0.0625,
+               framesMax:1,
+               extraGap:60,
+               dynamic:true,
+               
+               collider:{
+                 x:800,
+                 y:59,
+                 width:18.5,
+                 height:18.5
+               }
+               
+          })
+         powerups.push(lifePowerUp)
+          },20000)
+      },40000)
+        }
+        
+    let n = 0
+      const Score = ()=>{
+             n +=10
+            document.querySelector("#score").innerHTML= n
+     addingScore = setTimeout(Score, 1000);
+      }
+  
+      
+       JUMP = ()=>{      
+     if(clickable){ 
+   addEventListener('touchstart',()=>{
+           pressed += 1
+       if(pressed <=3){
+       runner.vel.y = -10
+         runner.img = runner.sprites.jump.image
+         switchSprites()
+       } else clickable = 0
+       })
+     }
+       }
+      
+       
+       checkingMyLife=()=>{
+         
+      setInterval( ()=>{   
+     if(shouldRemoveHP){
+       health -= 10
+    document.querySelector('#player_health').style.width=     health + "%"
+       shouldRemoveHP = 0 
+     if(health >=50){
+      document.querySelector('#player_health').style.background='lightGreen'
+     }
+     
+   else  if(health < 49 && health > 29){
+         document.querySelector('#player_health').style.background='orange'
+      }
+     
+   else  if(health <= 29 && health >0){
+         document.querySelector('#player_health').style.background='red'
+      }
+      else if(health <=0){
+     cancelAnimationFrame(animateId)
+     clearTimeout(addingScore)
+     document.querySelector('#score').innerHTML = 'Score : ' + n
+     document.querySelector('#gameOver').style.display = 'flex'
+          gameOverMusic.play()
+       document.querySelector('#gameOver').onclick=()=>{
+      location.reload(false) 
+        }
+      }
+    }
+   },1700)
+ }
+       
+       addingMyLife=()=>{
+         
+     setInterval( ()=>{
+           if(shouldAddHP){
+             shouldAddHP =0 //😚😚
+    if(health < 100)
+     {     health+=10
+           deleteHP=1
+     }
+    document.querySelector('#player_health').style.width=     health + "%"
+           }
+         },1700)
+       }
+    
+ window.onload=()=>{
+     const canvas= document.querySelector('canvas')
+        canvas.width = InnerWidth
+        canvas.height= InnerHeight
+     ctx = canvas.getContext('2d')
+   
+   
+          function animate(){
+    animateId = requestAnimationFrame(animate)
+          ctx.fillRect(0,0,InnerWidth,InnerHeight)
+          backGround.draw()
+           runner.update()
+       obstacles.forEach((obstacle)=>{
+          obstacle.UPDATE()
+      if(
+       runner.collider.x + runner.collider.width>= obstacle.collider.x && runner.collider.x <=obstacle.collider.x+obstacle.collider.width && runner.collider.y + runner.collider.height>= obstacle.collider.y && runner.collider.y <=obstacle.collider.y+obstacle.collider.width ){
+           iAmHItMusic.play()
+            hasTakenHit = true
+            if(hasTakenHit){
+          shouldRemoveHP = true
+              hasTakenHit = false
+            }
+        
+      }
+        })
+        
+       powerups.forEach((powerup)=>{
+           powerup.Update()
+       if(runner.collider.x + runner.collider.width>= powerup.collider.x && runner.collider.x <=powerup.collider.x+powerup.collider.width && runner.collider.y + runner.collider.height>= powerup.collider.y && runner.collider.y <=powerup.collider.y+powerup.collider.width){
+              hasEatenHP = true
+           if(hasEatenHP){
+             shouldAddHP=true
+             hasEatenHP = false
+           }
+           setInterval(()=>{
+             if(deleteHP){
+             powerup.scale = 0
+             }
+           },1)
+       }
+       })
+          }
+    
+       
+
+          //run game...
+    document.querySelector('#start').onclick=()=>{
+       n = 0
+       obstacles = [],
+       powerups = [],
+       pressed = 0,
+       clickable= true,
+       health = 100
+       hasTakenHit=false,
+       shouldRemoveHP=false,
+       hasEatenHP= false,
+       shouldAddHP=false,
+       deleteHP = 0
+ 
+          animate()  
+          spawnObstacles()
+          spwanPowerups()
+          Score()
+          JUMP()
+          checkingMyLife()
+          addingMyLife()
+          gameMusic.play()
+          setTimeout(()=>{
+            gameMusic.pause()},15800);
+          
+     document.querySelector('#player_info').style.display='flex'
+
+        for(let i=0;i<4;i++){
+   document.querySelectorAll('#start,#title,#help,#startPic')[i].style.display='none'
+        }
+    }
+    
+    document.getElementById('help').onclick=()=>{
+     document.querySelector('#help_page').style.display='none'
+     document.querySelector('#help_page').style.display='block'
+    }
+    document.querySelector('#help_page .cancel').onclick=()=>{
+      document.querySelector('#help_page').style.display='none'
+    }
+ } 
+</script>
+    <style>
+body{
+      top:0;
+      left:0;
+      position:absolute;
+      margin:0;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      overflow:hidden;
+}
+  *{
+    user-select:none;
+    box-sizing:border-box;
+  }
+  
+  
+  #player_info{
+    display:none;
+    width:100%;
+    position:absolute;
+    top:0;
+    left:0;
+    align-items:center;
+    justify-content:center;
+    padding:0.9% 0.9% 0.9% 0.9%
+  }
+  
+  #player_info #player_HP_bar{
+     height:1.35em;
+     width:25%;
+     background:white;
+     position:relative;
+     border-radius:0.5rem;
+  }
+  
+   #player_HP_bar #player_health{
+      top:0;
+      left:0;
+      bottom:0;
+      right:0;
+      position:absolute;
+      background:lightGreen;
+      border-radius:0.5rem;
+      box-shadow:0 2px 2px white inset;
+      width:100%;
+  }
+   
+   #score{
+     display:flex;
+     justify-content:center;
+     position:absolute;
+     top:0;
+     left:0;
+     color:white;
+     width:100vw;
+     height:100vh;
+     margin-top:5%;
+     font-family: 'Ubuntu', sans-serif;
+   }
+   
+   #gameOver{
+     position:absolute;
+     top:0;
+     left:0;
+     bottom:0;
+     right:0;
+     display:none;
+     justify-content:center;
+     align-items:center;
+     color:white;
+     font-weight:800;
+     text-align:center;
+     font-family: 'Ubuntu', sans-serif;
+   }
+   
+   #title{
+        position:absolute;
+        top:10%;
+        left:0;
+        width:100%;
+        font-size:3em;
+        color:white;
+        text-align:center;
+        z-index:2;
+        font-family: 'Games', sans-serif;
+   }
+   
+   #start{
+            position:absolute;
+            top:0;
+            left:0;
+            bottom:0;
+            right:0;
+            font-size:8em;
+            color:white;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            z-index:2;
+   }
+   
+   #help{
+           top:75%;
+           left:0;
+           position:absolute;
+           color:white;
+           font-size:2em;
+           width:100%;
+           text-align:center;
+           font-weight:900;
+           z-index:2;
+           transition:1s;
+           animation-name:animate;
+           animation-duration:1s;
+           animation-iteration-count:infinite;
+           
+   }
+  @keyframes animate{
+    from{ font-size:2em;
+    }
+    50%{ font-size:2.5em;
+    }
+    to{ font-size:2em;
+    }
+  }
+   
+   #help_page{
+     display:none;
+     position:absolute;
+     top:10%;
+     left:22.5%;
+     z-index:3;
+     background:rgba(225,225,225,0.65);
+     width:55%;
+     height:11em;
+     overflow:scroll;
+     overflow-x:hidden;
+     text-align:center;
+     border-radius:0.5rem;
+     border:3px solid white;
+     font-weight:650;
+     font-family: 'Ubuntu', sans-serif;
+
+   }
+   
+   #help_page .cancel{
+     position:absolute;
+     top:5%;
+     left:49%;
+   }
+   
+   #startPic{
+     position:absolute;
+     left:0;
+     top:0;
+     width:100vw;
+     height:177.9%;
+     z-index:1;
+   }
+</style>
+<link href= './style.css' rel="stylesheet">
+<link href="http://fonts.cdnfonts.com/css/games" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@1,500&display=swap" rel="stylesheet">
+         </head>
+<body>
+<canvas></canvas>  
+  
+  <div id='player_info' >
+       <div> ❤️ </div>
+     <div id='player_HP_bar'>
+      <div id='player_health'>
+      </div>
+     </div>
+          
+  </div>
+     <div id='score'>0</div>
+     <div id='gameOver'>
+       Game over<br>Tap to continue!
+     </div>
+        
+        <div id= 'title'>
+          JUMP ↑ M∆NI∆
+        </div>
+            <div id='start'>
+                ‣
+              </div>
+           
+           <div id= 'help'>
+                   ⓘ
+                 </div>
+            <div id='help_page'>
+              <br><br>
+           Guy needs to escape the woods he's being chased by an unknown sprite, Help him leave the forest Unharmed! :0 <br><br>
+           <b>How to play...</b><br><br>
+          • click on the screen to jump<br>
+          • avoid hitting obstacles <br>
+          • collect powerups and more! <br><br>
+                 
+          <b>Created by Developer Lionel sisso :)</b><br><br> for any feedback or suggestion, message me in WhatsApp wa.me/+2347046804914 ;)<br><br>
+              ___<br>built on ∆ndroid™<br>
+           <div class='cancel'>❌</div>
+            </div>
+        <img src='https://i.ibb.co/9GGDvRv/20220415-165208.png' id='startPic' alt=''>
+           
+</body>
+     </html>
