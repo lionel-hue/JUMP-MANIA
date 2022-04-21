@@ -1,9 +1,7 @@
-  <!DOCTYPE html
+    <!DOCTYPE html
     <html>
        <head>
-<meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script>
-class Sprite {
+<script>class Sprite {
    constructor({imgSrc,pos,vel,width,height,scale,framesMax,dynamic,extraGap,collider,sprites}){
      
      this.img = new Image()
@@ -138,11 +136,12 @@ class Sprite {
        }
        
  }
-  
+  </script>
+<script> 
  const InnerWidth =innerWidth,
        InnerHeight=innerHeight, 
-       theGround=InnerHeight-119,
-       gravity=0.7
+       theGround=InnerHeight-(InnerHeight/2.26050420168)
+       gravity= InnerHeight/384.28571428571
        
 let    animateId,
        pressed,
@@ -186,11 +185,11 @@ let    animateId,
         sprites:undefined
     })
 
-
+    
  const runner = new Sprite({
        imgSrc :'https://i.ibb.co/4tcF8Qm/Run.png',
        pos:{
-           x:20,
+           x:InnerWidth/38.75,
            y: theGround
        },
        vel:{
@@ -200,13 +199,14 @@ let    animateId,
        scale:2,
        framesMax:8,
        dynamic:true,
-       extraGap:76,
+       extraGap:InnerHeight/3.53947368421,
        
        collider: {
-             x :90,
-             y :210,
-             width:20,
-             height:40
+             x :InnerWidth/8.61111111111,
+             y :InnerHeight/1.28095238095,
+             width:InnerWidth/38.75,
+             height:InnerHeight/6.725
+             
        },
         
        sprites:{
@@ -227,13 +227,13 @@ let    animateId,
           //Jump
           runner.scale = 0.74
           runner.framesMax = 2
-          runner.extraGap = 207
+          runner.extraGap = InnerHeight/1.29951690821
                 break
               case 'https://i.ibb.co/4tcF8Qm/Run.png':
           //run
           runner.scale = 2
           runner.framesMax = 8  
-          runner.extraGap = 76
+          runner.extraGap = InnerHeight/3.53947368421
                 break
               
               default:
@@ -247,23 +247,23 @@ let    animateId,
           
        imgSrc : 'https://i.ibb.co/wpfYr7h/rock-3.png',
            pos :{
-              x:InnerWidth+50, 
-              y: InnerHeight-36
+              x:InnerWidth+InnerWidth/15.5, 
+              y: InnerHeight-InnerHeight/7.47222222222
            },
            vel:{
-              x:-5,
+              x:-InnerWidth/155,
               y:0
            },
            scale:1,
            framesMax:1,
-           extraGap:60,
+           extraGap:InnerHeight/4.483333333333,
            dynamic:true,
            
            collider: {
-             x :828,
-             y :232,
-             width:45,
-             height:18
+             x :InnerWidth/0.9359903382,
+             y : InnerHeight/1.15948275862,
+             width:InnerWidth/17.22222222222,
+             height:InnerHeight/14.944444444
        }
         })
        obstacles.push(rock)
@@ -273,23 +273,23 @@ let    animateId,
           
        imgSrc : 'https://i.ibb.co/0ySPrTN/lamp.png',
            pos :{
-              x:InnerWidth+50, 
-              y: InnerHeight-78
+              x:InnerWidth+(InnerWidth/15.5), 
+              y: InnerHeight-(InnerHeight/3.448717949)
            },
            vel:{
-              x:-5,
+              x:-InnerWidth/155,
               y:0
            },
            scale:1,
            framesMax:1,
-           extraGap:60,
+           extraGap:InnerHeight/4.48333333333,
            dynamic:true,
            
            collider: {
-             x :829,
-             y :193,
-             width:20,
-             height:55
+             x :InnerWidth/0.9348612786,
+             y :InnerHeight/1.393782383,
+             width:InnerWidth/38.75,
+             height:InnerHeight/4.890909091
            }
         })
        obstacles.push(lamp)
@@ -299,23 +299,23 @@ let    animateId,
           
        imgSrc : 'https://i.ibb.co/xqvHwHC/shop-anim.png',
            pos :{
-              x:InnerWidth+200, 
-              y: InnerHeight-196
+              x:InnerWidth+(InnerWidth/3.875), 
+              y: InnerHeight-(InnerHeight/1.37244898)
            },
            vel:{
-              x:-5,
+              x:-InnerWidth/155,
               y:0
            },
            scale:1.53,
            framesMax:6,
-           extraGap:60,
+           extraGap:InnerHeight/4.4833333,
            dynamic:true,
            
            collider: {
-             x :980,
-             y :120,
-             width:150,
-             height:131
+             x :InnerWidth/.7908163265,
+             y :InnerHeight/2.24166666667,
+             width:InnerWidth/5.166666667,
+             height:InnerHeight/2.053435115
            }
         })
        obstacles.push(building)
@@ -324,34 +324,34 @@ let    animateId,
         
         
         const spwanPowerups = ()=>{
-      setTimeout(()=>{
+        setTimeout( ()=>{
           setInterval(()=>{
     const lifePowerUp = new PowerUps({
                imgSrc:'https://i.ibb.co/hmSk03d/1650388043468.png',
                pos:{
-                 x :InnerWidth+14,
-                 y :50
+                 x :InnerWidth+InnerWidth/55.35714286,
+                 y :InnerHeight/5.38
                },
                vel:{
-                 x:-5,
+                 x:-InnerWidth/155,
                  y:0
                },
                scale:0.0625,
                framesMax:1,
-               extraGap:60,
+               extraGap:InnerHeight/4.483333333333,
                dynamic:true,
                
                collider:{
-                 x:800,
-                 y:59,
-                 width:18.5,
-                 height:18.5
+                 x:InnerWidth/0.96875,
+                 y:InnerHeight/4.559322034,
+                 width:InnerWidth/41.891891891,
+                 height:InnerHeight/14.540540540540
                }
                
           })
          powerups.push(lifePowerUp)
-          },20000)
-      },40000)
+          },18000)
+          },40000)
         }
         
     let n = 0
@@ -422,7 +422,12 @@ let    animateId,
          },1700)
        }
     
- window.onload=()=>{
+ loadedGame=()=>{
+   
+      document.querySelector('#startPic').style.display= 'block'
+      document.querySelector('#help').style.display = 'block'
+      document.querySelector('#start').style.display = 'flex'
+   
      const canvas= document.querySelector('canvas')
         canvas.width = InnerWidth
         canvas.height= InnerHeight
@@ -490,7 +495,7 @@ let    animateId,
           addingMyLife()
           gameMusic.play()
           setTimeout(()=>{
-            gameMusic.pause()},15800);
+            gameMusic.pause()},15800)
           
      document.querySelector('#player_info').style.display='flex'
 
@@ -507,8 +512,16 @@ let    animateId,
       document.querySelector('#help_page').style.display='none'
     }
  } 
-</script>
-    <style>
+ 
+      
+ 
+     if(InnerWidth >= InnerHeight){
+          window.addEventListener('load',loadedGame)
+        }
+         else {
+      alert('This game runs correctly in landscape mode,auto rotate your device and try again😊')
+         }</script>
+<style>
 body{
       top:0;
       left:0;
@@ -555,17 +568,23 @@ body{
       box-shadow:0 2px 2px white inset;
       width:100%;
   }
+  
+   #scoreCont{
+     position:absolute;
+     width:100%;
+     left:0;
+     top:0;
+     align-items:center;
+     justify-content:center;
+     display:flex;
+     padding: 5% 0.9% 10% 0.9;
+   }
    
    #score{
      display:flex;
      justify-content:center;
-     position:absolute;
-     top:0;
-     left:0;
      color:white;
-     width:100vw;
-     height:100vh;
-     margin-top:5%;
+     width:100%;
      font-family: 'Ubuntu', sans-serif;
    }
    
@@ -604,7 +623,7 @@ body{
             right:0;
             font-size:8em;
             color:white;
-            display:flex;
+            display:none;
             justify-content:center;
             align-items:center;
             z-index:2;
@@ -613,6 +632,7 @@ body{
    #help{
            top:75%;
            left:0;
+           display:none;
            position:absolute;
            color:white;
            font-size:2em;
@@ -667,6 +687,7 @@ body{
      width:100vw;
      height:177.9%;
      z-index:1;
+     display:none;
    }
 </style>
 <link href= './style.css' rel="stylesheet">
@@ -686,7 +707,10 @@ body{
      </div>
           
   </div>
+     <div id='scoreCont'>
      <div id='score'>0</div>
+        </div>
+        
      <div id='gameOver'>
        Game over<br>Tap to continue!
      </div>
