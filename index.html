@@ -35,7 +35,7 @@ class Sprite {
           this.pos.y,
           (this.img.width/this.framesMax)*this.scale,
           (this.img.height)*this.scale)
-          ctx.fillStyle='rgba(0,0,0,1)'
+          ctx.fillStyle='rgba(0,0,0,0)'
           ctx.fillRect(
             this.collider.x,
             this.collider.y,
@@ -139,8 +139,8 @@ class Sprite {
        
  }
   
- const InnerWidth =775,
-       InnerHeight=269, 
+ const InnerWidth =innerWidth,
+       InnerHeight=innerHeight, 
        theGround=InnerHeight-119,
        gravity=0.7
        
