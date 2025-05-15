@@ -13,4 +13,4 @@
 > ## NOTE !
 > #### This game is built for mobile  and might not work properly on desktop. <br><br>
 
-> ## Click here to <a href="https://">play</a>
+> ## Click here to <a href="https://lionel-hue.github.io/JUMP-MANIA/src/index.html">play</a>
