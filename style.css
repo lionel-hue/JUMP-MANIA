@@ -1,0 +1,167 @@
+body{
+    top:0;
+    left:0;
+    position:absolute;
+    margin:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
+*{
+  user-select:none;
+  box-sizing:border-box;
+}
+
+
+#player_info{
+  display:none;
+  width:100%;
+  position:absolute;
+  top:0;
+  left:0;
+  align-items:center;
+  justify-content:center;
+  padding:0.9% 0.9% 0.9% 0.9%
+}
+
+#player_info #player_HP_bar{
+   height:1.35em;
+   width:25%;
+   background:white;
+   position:relative;
+   border-radius:0.5rem;
+}
+
+ #player_HP_bar #player_health{
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+    position:absolute;
+    background:lightGreen;
+    border-radius:0.5rem;
+    box-shadow:0 2px 2px white inset;
+    width:100%;
+}
+
+ #scoreCont{
+   position:absolute;
+   width:100%;
+   left:0;
+   top:0;
+   align-items:center;
+   justify-content:center;
+   display:flex;
+   padding: 5% 0.9% 10% 0.9;
+ }
+ 
+ #score{
+   display:flex;
+   justify-content:center;
+   color:white;
+   width:100%;
+   font-family: 'Ubuntu', sans-serif;
+ }
+ 
+ #gameOver{
+   position:absolute;
+   top:0;
+   left:0;
+   bottom:0;
+   right:0;
+   display:none;
+   justify-content:center;
+   align-items:center;
+   color:white;
+   font-weight:800;
+   text-align:center;
+   font-family: 'Ubuntu', sans-serif;
+ }
+ 
+ #title{
+      position:absolute;
+      top:10%;
+      left:0;
+      width:100%;
+      font-size:3em;
+      color:white;
+      text-align:center;
+      z-index:2;
+      font-family: 'Games', sans-serif;
+ }
+ 
+ #start{
+          position:absolute;
+          top:0;
+          left:0;
+          bottom:0;
+          right:0;
+          font-size:8em;
+          color:white;
+          display:none;
+          justify-content:center;
+          align-items:center;
+          z-index:2;
+ }
+ 
+ #help{
+         top:75%;
+         left:0;
+         display:none;
+         position:absolute;
+         color:white;
+         font-size:2em;
+         width:100%;
+         text-align:center;
+         font-weight:900;
+         z-index:2;
+         transition:1s;
+         animation-name:animate;
+         animation-duration:1s;
+         animation-iteration-count:infinite;
+         
+ }
+@keyframes animate{
+  from{ font-size:2em;
+  }
+  50%{ font-size:2.5em;
+  }
+  to{ font-size:2em;
+  }
+}
+ 
+ #help_page{
+   display:none;
+   position:absolute;
+   top:10%;
+   left:22.5%;
+   z-index:3;
+   background:rgba(225,225,225,0.65);
+   width:55%;
+   height:11em;
+   overflow:scroll;
+   overflow-x:hidden;
+   text-align:center;
+   border-radius:0.5rem;
+   border:3px solid white;
+   font-weight:650;
+   font-family: 'Ubuntu', sans-serif;
+
+ }
+ 
+ #help_page .cancel{
+   position:absolute;
+   top:5%;
+   left:49%;
+ }
+ 
+ #startPic{
+   position:absolute;
+   left:0;
+   top:0;
+   width:100vw;
+   height:177.9%;
+   z-index:1;
+   display:none;
+ }
