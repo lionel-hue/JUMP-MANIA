@@ -1,6 +1,6 @@
 # <p align="center">JUMP MAINIA!</p>
 > #### Jump mania is a simple endless runner gui made with vanilla js and the oop concept.
-> #### <p align="center"><img width="75%" src="img/Screenshot from 2025-05-15 21-11-52.png"><br><img src="./img/Screenshot from 2025-05-15 21-11-59.png" width="75%"><br><img width="75%" src="./img/Screenshot from 2025-05-15 21-12-04.png"><br><img width="75%" src="./img/Screenshot from 2025-05-15 21-12-38.png"></p> 
+> #### <p align="center"><img width="75%" src="img/Screenshot_20250515-214627.jpg"><br><img src="./img/Screenshot_20250515-214632.jpg" width="75%"><br><img width="75%" src="./img/Screenshot_20250515-214554.jpg"><br><img width="75%" src="./img/Screenshot_20250515-214603.jpg"></p> 
 
 > ## Trivia 
 > #### Guy needs to escape the woods as he is being chased by an unknown sprite!, Help him escape unharmed
